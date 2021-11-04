@@ -15,6 +15,10 @@ const transporter = nodemailer.createTransport(
   })
 );
 
+exports.getIndex = (req, res, next) => {
+  res.json({test:'This is a test'})
+}
+
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
   if (message.length > 0) {
@@ -22,7 +26,7 @@ exports.getLogin = (req, res, next) => {
   } else {
     message = null;
   }
-  res.send({
+  res.json({
     path: '/login',
     pageTitle: 'Login',
     errorMessage: message,
@@ -31,6 +35,7 @@ exports.getLogin = (req, res, next) => {
       password: '',
     },
     validationErrors: [],
+    _csrf: req.csrfToken(),
   });
 };
 
@@ -41,7 +46,7 @@ exports.getSignup = (req, res, next) => {
   } else {
     message = null;
   }
-  res.send({
+  res.json({
     path: '/signup',
     pageTitle: 'Signup',
     errorMessage: message,
@@ -53,6 +58,7 @@ exports.getSignup = (req, res, next) => {
       admin: false,
     },
     validationErrors: [],
+    _csrf: req.csrfToken(),
   });
 };
 
@@ -62,7 +68,7 @@ exports.postLogin = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).send({
+    return res.status(422).json({
       path: '/login',
       pageTitle: 'Login',
       errorMessage: errors.array()[0].msg,
@@ -71,13 +77,14 @@ exports.postLogin = (req, res, next) => {
         password: password,
       },
       validationErrors: errors.array(),
+      _csrf: req.csrfToken(),
     });
   }
 
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        return res.status(422).send({
+        return res.status(422).json({
           path: '/login',
           pageTitle: 'Login',
           errorMessage: 'Invalid email or password',
@@ -86,6 +93,7 @@ exports.postLogin = (req, res, next) => {
             password: password,
           },
           validationErrors: [],
+          _csrf: req.csrfToken(),
         });
       }
       bcrypt
@@ -100,7 +108,7 @@ exports.postLogin = (req, res, next) => {
               return res.redirect('/');
             });
           }
-          return res.status(422).send({
+          return res.status(422).json({
             path: '/login',
             pageTitle: 'Login',
             errorMessage: 'Invalid email or password',
@@ -109,6 +117,7 @@ exports.postLogin = (req, res, next) => {
               password: password,
             },
             validationErrors: [],
+            _csrf: req.csrfToken(),
           });
         })
         .catch(err => {
@@ -128,10 +137,10 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const admin = typeof req.body.admin !== "undefined";
+  const admin = typeof req.body.admin !== 'undefined';
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).send({
+    return res.status(422).json({
       path: '/signup',
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
@@ -143,6 +152,7 @@ exports.postSignup = (req, res, next) => {
         admin: admin,
       },
       validationErrors: errors.array(),
+      _csrf: req.csrfToken(),
     });
   }
   bcrypt
@@ -159,7 +169,7 @@ exports.postSignup = (req, res, next) => {
     })
     .then(result => {
       return res.redirect('/login');
-      return transporter.sendMail({
+      return transporter.jsonMail({
         to: email,
         from: 'ebe17003@byui.edu',
         subject: 'Signup Completed!',
@@ -187,10 +197,11 @@ exports.getReset = (req, res, next) => {
   } else {
     message = null;
   }
-  res.send({
+  res.json({
     path: '/reset',
     pageTitle: 'Reset Password',
     errorMessage: message,
+    _csrf: req.csrfToken(),
   });
 };
 
@@ -213,7 +224,7 @@ exports.postReset = (req, res, next) => {
       })
       .then(result => {
         res.redirect('/');
-        transporter.sendMail({
+        transporter.jsonMail({
           to: req.body.email,
           from: 'ebe17003@byui.edu',
           subject: 'Password Reset',
@@ -241,12 +252,13 @@ exports.getNewPassword = (req, res, next) => {
       } else {
         message = null;
       }
-      res.send({
+      res.json({
         path: '/new-password',
-        pageTitle: 'New Passwopred',
+        pageTitle: 'New Passwored',
         errorMessage: message,
         userId: user._id.toString(),
         passwordToken: token,
+        _csrf: req.csrfToken(),
       });
     })
     .catch(err => {

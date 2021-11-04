@@ -6,6 +6,8 @@ const User = require('../models/user');
 
 const router = express.Router();
 
+router.get('/', authController.getIndex);
+
 router.get('/login', authController.getLogin);
 
 router.get('/signup', authController.getSignup);
