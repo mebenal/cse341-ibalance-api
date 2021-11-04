@@ -43,6 +43,8 @@ const fileFilter = (req, file, cb) => {
 const PORT = process.env.PORT || 3000;
 
 const authRoutes = require('./routes/auth');
+const taskRoutes = require('./routes/tasks')
+const adminRoutes = require('./routes/admin');
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -84,7 +86,10 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(authRoutes);
+// Accessing routes
+app.use(authRoutes); // access auth routes
+app.use(adminRoutes); // access admin routes
+app.use(taskRoutes); // access the tasks  
 
 app.get('/500', errorController.get500);
 

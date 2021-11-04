@@ -12,10 +12,6 @@ router.get('/login', authController.getLogin);
 
 router.get('/signup', authController.getSignup);
 
-router.get('/daily-tasks', authController.getDailyTasks)
-
-router.post('/add-task', authController.postAddNewTask)
-
 router.post(
   '/login',
   [
