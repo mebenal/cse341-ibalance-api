@@ -1,4 +1,3 @@
-// test - Sam
 require('dotenv').config()
 
 const path = require('path');
@@ -43,6 +42,7 @@ const fileFilter = (req, file, cb) => {
 const PORT = process.env.PORT || 3000;
 
 const authRoutes = require('./routes/auth');
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
