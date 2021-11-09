@@ -4,7 +4,7 @@
 //  "taskCategory" = ""
 //  "taskCompletionStatus" = False
 //  "" time (possibly)
-
+const Task = require('../models/task')
 
 exports.getDailyTasks = (req, res, next) => { // gets all page data and users tasks
     //return res.status(422).send({
@@ -25,7 +25,13 @@ exports.getDailyTasks = (req, res, next) => { // gets all page data and users ta
   }
 
   exports.postDeleteTask = (req, res, next) => {
-    res.redirect('/test234');
+    const taskID = req.body.taskID;
+    req.task
+    .deleteTask(taskID)
+    .then(result => {
+      res.redirect('/test234');
+    })
+    .catch(err => console.log(err));
   }
 
   exports.postEditTask = (req, res, next) => {
