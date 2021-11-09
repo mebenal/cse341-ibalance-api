@@ -35,4 +35,24 @@ const taskSchema = new Schema({
   notes: String,
 });
 
-module.exports = mongoose.model('Task', userSchema)
+taskSchema.methods.addTask = function (category, title, date, completed, notes, user, repeat) {
+
+}
+
+taskSchema.methods.deleteTask = function (taskId, deleteRepeatElements=false) {
+
+}
+
+taskSchema.methods.editTask = function (taskId, title, date, completed, notes) {
+
+}
+
+taskSchema.methods.getTasks = function (startDate, endDate, user) {
+
+}
+
+taskSchema.methods.getTask = function (taskId) {
+  
+}
+
+module.exports = mongoose.model('Task', taskSchema)
