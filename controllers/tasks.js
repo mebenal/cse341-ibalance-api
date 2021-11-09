@@ -26,14 +26,26 @@ exports.getDailyTasks = (req, res, next) => { // gets all page data and users ta
 
   exports.postDeleteTask = (req, res, next) => {
     const taskID = req.body.taskID;
+    var deleteRepeatElements = req.body.deleteRepeatElements;
     req.task
-    .deleteTask(taskID)
-    .then(result => {
-      res.redirect('/test234');
-    })
+      .deleteTask(taskID, deleteRepeatElements)
+      .then(result => {
+        res.redirect('/test234');
+      })
     .catch(err => console.log(err));
   }
 
   exports.postEditTask = (req, res, next) => {
-    res.redirect('/test345');
-  }
+    const taskID = req.body.taskID;
+    const taskTitle = req.body.taskTitle;
+    const taskDate = req.body.taskDate;
+    const taskCategory = req.body.taskCategory;
+    const taskCompletionStatus = req.body.taskCompletionStatus;
+    const taskNote = req.body.taskNotes;
+    req.task
+      .editTask(taskID, taskCategory, taskTitle, taskDate, taskCompletionStatus, taskNote)
+      .then(result => {
+        res.redirect('/test345');
+      })
+    .catch(err => console.log(err));
+}
