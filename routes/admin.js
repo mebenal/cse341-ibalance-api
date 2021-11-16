@@ -11,10 +11,13 @@ const express = require('express');
 const adminController = require('../controllers/admin');
 // const User = require('../models/user');
 
+const isAuth = require('../middleware/is-auth')
+const isAdmin = require('../middleware/is-admin')
+
 const router = express.Router();
 
 // router.get('/daily-tasks', tasksController.getDailyTasks)
-router.get('/admin', adminController.getAdminView)
+router.get('/admin', isAuth, isAdmin, adminController.getAdminView)
 
 
 module.exports = router;

@@ -4,48 +4,58 @@
 //  "taskCategory" = ""
 //  "taskCompletionStatus" = False
 //  "" time (possibly)
-const Task = require('../models/task')
+const Task = require('../middleware/task');
 
-exports.getDailyTasks = (req, res, next) => { // gets all page data and users tasks
-    //return res.status(422).send({
-      return res.send({
+exports.getDailyTasks = (req, res, next) => {
+  // gets all page data and users tasks
+  const now = new Date();
+  const today = new Date(
+    now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
+  );
+  const tomorrow = new Date(
+    now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate() + 1)
+  );
+
+  Task.getTasks(today, tomorrow, req.user).then(tasks => {
+    return res.send({
       path: '/daily-tasks',
       pageTitle: 'Daily Tasks',
-      date: 'date here',
-      task: 'array of tasks', // has name and category color - Sam
+      date: new Date(),
+      task: tasks, // has name and category color - Sam
+      _csrf: req.csrfToken(),
     });
-  };
-  
-  exports.postAddNewTask = (req, res, next) => { // Creates a new task
-    const taskTitle = req.body.taskTitle;
-    const taskCategory = req.body.taskCategory;
-    const taskCompletionStatus = False;
-    res.redirect('/test123');
-    // add task to mongodb through model stuff
-  }
+  });
+};
 
-  exports.postDeleteTask = (req, res, next) => {
-    const taskID = req.body.taskID;
-    var deleteRepeatElements = req.body.deleteRepeatElements;
-    req.task
-      .deleteTask(taskID, deleteRepeatElements)
-      .then(result => {
-        res.redirect('/test234');
-      })
-    .catch(err => console.log(err));
-  }
+exports.postAddNewTask = (req, res, next) => {
+  // Creates a new task
+  const taskTitle = req.body.taskTitle;
+  const taskCategory = req.body.taskCategory;
+  const taskCompletionStatus = false;
+  const taskDueDate = req.body.taskDate;
+  const taskNotes = req.body.taskNotes;
+  const taskRepeats = req.body.taskRepeat;
+  Task.addTask(
+    taskCategory,
+    taskTitle,
+    taskDueDate,
+    taskCompletionStatus,
+    taskNotes,
+    req.user,
+    taskRepeats
+  ).then(saved => {
+    if (saved) {
+      res.redirect('/daily-tasks');
+    } else {
+      res.status(500).redirect('/500');
+    }
+  });
+};
 
-  exports.postEditTask = (req, res, next) => {
-    const taskID = req.body.taskID;
-    const taskTitle = req.body.taskTitle;
-    const taskDate = req.body.taskDate;
-    const taskCategory = req.body.taskCategory;
-    const taskCompletionStatus = req.body.taskCompletionStatus;
-    const taskNote = req.body.taskNotes;
-    req.task
-      .editTask(taskID, taskCategory, taskTitle, taskDate, taskCompletionStatus, taskNote)
-      .then(result => {
-        res.redirect('/test345');
-      })
-    .catch(err => console.log(err));
-}
+exports.postDeleteTask = (req, res, next) => {
+  res.redirect('/test234');
+};
+
+exports.postEditTask = (req, res, next) => {
+  res.redirect('/test345');
+};
