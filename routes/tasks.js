@@ -11,15 +11,17 @@ const express = require('express');
 const tasksController = require('../controllers/tasks');
 // const User = require('../models/user');
 
+const isAuth = require('../middleware/is-auth');
+const isAdmin = require('../middleware/is-admin');
+
 const router = express.Router();
 
-router.get('/daily-tasks', tasksController.getDailyTasks)
+router.get('/daily-tasks', isAuth, tasksController.getDailyTasks);
 
-router.post('/add-task', tasksController.postAddNewTask)
+router.post('/add-task', tasksController.postAddNewTask);
 
-router.post('/edit-task', tasksController.postEditTask)
+router.post('/edit-task', tasksController.postEditTask);
 
-router.post('/delete-task', tasksController.postDeleteTask)
-
+router.post('/delete-task', tasksController.postDeleteTask);
 
 module.exports = router;
