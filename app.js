@@ -53,7 +53,7 @@ app.use(cookieParser())
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('images', express.static(path.join(__dirname, 'images')));
 app.use((req, res, next) => {
-  console.log(res);
+  console.log(req.body);
   next();
 })
 app.use(
