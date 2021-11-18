@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+const cors = require('cors');
 const flash = require('connect-flash');
 const multer = require('multer');
 
@@ -46,7 +47,7 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks')
 const adminRoutes = require('./routes/admin');
 
-
+app.use(cors);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
