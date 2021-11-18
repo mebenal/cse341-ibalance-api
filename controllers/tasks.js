@@ -17,7 +17,7 @@ exports.getDailyTasks = (req, res, next) => {
   );
 
   Task.getTasks(today, tomorrow, req.user).then(tasks => {
-    return res.send({
+    return res.json({
       path: '/daily-tasks',
       pageTitle: 'Daily Tasks',
       date: new Date(),
@@ -44,18 +44,27 @@ exports.postAddNewTask = (req, res, next) => {
     req.user,
     taskRepeats
   ).then(saved => {
-    if (saved) {
-      res.redirect('/daily-tasks');
-    } else {
-      res.status(500).redirect('/500');
-    }
+    res.json({saved:saved})
   });
 };
 
 exports.postDeleteTask = (req, res, next) => {
-  res.redirect('/test234');
+  const taskId = req.body.taskId;
+  Task.deleteTask(taskId)
+  .then(deleted =>{
+    res.json({deleted:deleted})
+  })
 };
 
 exports.postEditTask = (req, res, next) => {
-  res.redirect('/test345');
+  const taskId = req.body.taskId;
+  const taskTitle = req.body.taskTitle;
+  const taskCategory = req.body.taskCategory;
+  const taskCompletionStatus = false;
+  const taskDueDate = req.body.taskDate;
+  const taskNotes = req.body.taskNotes;
+  Task.editTask(taskId, taskCategory, taskTitle, taskDueDate, taskCompletionStatus, taskNotes)
+  .then(edited => {
+    res.json({edited:edited});
+  })
 };
