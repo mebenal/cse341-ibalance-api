@@ -52,6 +52,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('images', express.static(path.join(__dirname, 'images')));
+console.log(res);
 app.use(
   session({
     secret: 'my secret',
