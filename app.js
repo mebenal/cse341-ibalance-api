@@ -47,7 +47,7 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks')
 const adminRoutes = require('./routes/admin');
 
-app.use(cors);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
