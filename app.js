@@ -53,7 +53,8 @@ app.use(cookieParser())
 
 app.use((req, res, next) => {
   console.log(req.cookies);
-  console.log(req.body._csrf);
+  console.log(req.body);
+  next();
 })
 
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
