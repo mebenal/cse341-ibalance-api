@@ -50,6 +50,12 @@ const adminRoutes = require('./routes/admin');
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
+
+app.use((req, res, next) => {
+  console.log(req.cookies);
+  console.log(req.body._csrf);
+})
+
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('images', express.static(path.join(__dirname, 'images')));
 app.use((req, res, next) => {
