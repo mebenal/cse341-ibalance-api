@@ -22,7 +22,7 @@ const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
-const csrfProtection = csrf({ cookie:true });
+const csrfProtection = csrf({ cookie:{sameSite:'none'} });
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
