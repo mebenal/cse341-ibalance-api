@@ -48,7 +48,7 @@ const taskRoutes = require('./routes/tasks')
 const adminRoutes = require('./routes/admin');
 
 app.use(cors({credentials: true, origin: true}));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ extended: false }));
 app.use(cookieParser())
 
 app.use((req, res, next) => {
