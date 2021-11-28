@@ -8,7 +8,7 @@ module.exports.addTask = function (category, title, date, completed, notes, user
   } else {
     repeatId = null
   }
-  const newTask = new Task({category:category,title:title,date:date,completed:completed,notes:notes,userId:user._id,repeat:repeatId})
+  const newTask = new Task({category:category,title:title,date:date,completed:completed,notes:notes,userId:user._id,repeat:repeatId._id})
   return newTask.save()
 }
 
