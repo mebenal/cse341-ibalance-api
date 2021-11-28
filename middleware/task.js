@@ -10,8 +10,9 @@ module.exports.addTask = function (
   user,
   repeat
 ) {
+  let newTask
   if (repeat) {
-    const newTask = new Task({
+    newTask = new Task({
       category: category,
       title: title,
       date: date,
@@ -21,7 +22,7 @@ module.exports.addTask = function (
       repeat: new Repeat({ user: user._id })._id,
     });
   } else {
-    const newTask = new Task({
+    newTask = new Task({
       category: category,
       title: title,
       date: date,
