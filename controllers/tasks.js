@@ -32,7 +32,7 @@ exports.postAddNewTask = (req, res, next) => {
   const taskTitle = req.body.taskTitle;
   const taskCategory = req.body.taskCategory;
   const taskCompletionStatus = false;
-  const taskDueDate = req.body.taskDate;
+  const taskDueDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
   const taskRepeats = req.body.taskRepeat;
   Task.addTask(

@@ -10,23 +10,27 @@ module.exports.addTask = function (
   user,
   repeat
 ) {
-  let repeatId;
   if (repeat) {
-    repeatId = new Repeat({ user: user._id });
+    const newTask = new Task({
+      category: category,
+      title: title,
+      date: date,
+      completed: completed,
+      notes: notes,
+      userId: user._id,
+      repeat: new Repeat({ user: user._id })._id,
+    });
   } else {
-    repeatId = null;
+    const newTask = new Task({
+      category: category,
+      title: title,
+      date: date,
+      completed: completed,
+      notes: notes,
+      userId: user._id,
+    });
   }
-  console.log(user);
-  console.log(repeatId);
-  const newTask = new Task({
-    category: category,
-    title: title,
-    date: date,
-    completed: completed,
-    notes: notes,
-    userId: user._id,
-    repeat: repeatId,
-  });
+
   return newTask.save();
 };
 
