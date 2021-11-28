@@ -28,8 +28,7 @@ const taskSchema = new Schema({
     required: true
   },
   repeatId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Repeat',
+    type: Object,
   },
   notes: String,
 });

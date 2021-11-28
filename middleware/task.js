@@ -25,7 +25,7 @@ module.exports.addTask = function (
     completed: completed,
     notes: notes,
     userId: user._id,
-    repeat: repeatId._id,
+    repeat: repeatId,
   });
   return newTask.save();
 };
