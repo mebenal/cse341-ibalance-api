@@ -86,8 +86,8 @@ app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
 app.use('images', express.static(path.join(__dirname, 'images')));
-app.use(session(sess));
 app.use(csrfProtection);
+app.use(session(sess));
 app.use(flash());
 
 app.use((req, res, next) => {
