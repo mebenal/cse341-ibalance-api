@@ -24,7 +24,7 @@ const store = new MongoDBStore({
 const sess = {
   secret: 'my secret',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   store: store,
   cookie: {
     path: '/',
