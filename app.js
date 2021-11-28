@@ -21,6 +21,19 @@ const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
+const sess = {
+  secret: 'my secret',
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    secure: true,
+    maxAge: null,
+    sameSite: 'none',
+  },
+};
 const csrfProtection = csrf({ cookie: { sameSite: 'none', secure: true } });
 
 const fileStorage = multer.diskStorage({
@@ -72,15 +85,7 @@ app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
 app.use('images', express.static(path.join(__dirname, 'images')));
-app.use(
-  session({
-    secret: 'my secret',
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: { sameSite: 'none', secure: true },
-  })
-);
+app.use(session());
 app.use(csrfProtection);
 app.use(flash());
 
