@@ -63,6 +63,7 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 const adminRoutes = require('./routes/admin');
 
+app.set('trust proxy', 1)
 app.use(
   cors({
     credentials: true,
