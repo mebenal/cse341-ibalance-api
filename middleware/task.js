@@ -10,7 +10,8 @@ module.exports.addTask = function (
   user,
   repeat
 ) {
-  let newTask
+  console.log(date);
+  let newTask;
   if (repeat) {
     newTask = new Task({
       category: category,
