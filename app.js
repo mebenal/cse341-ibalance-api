@@ -76,12 +76,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use((req, res, next) => {
-  console.log(req.cookies);
-  console.log(req.body);
-  next();
-});
-
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );

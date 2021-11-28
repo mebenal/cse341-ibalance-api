@@ -17,7 +17,7 @@ module.exports.addTask = function (
     repeatId = null;
   }
   console.log(user);
-  consile.log(repeatId);
+  console.log(repeatId);
   const newTask = new Task({
     category: category,
     title: title,
