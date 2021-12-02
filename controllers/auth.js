@@ -25,7 +25,7 @@ exports.postLogin = (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({
+    return res.json({
       success: false,
       errorMessage: errors.array()[0].msg,
     });
@@ -34,7 +34,7 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        return res.status(422).json({
+        return res.json({
           success: false,
           errorMessage: 'Invalid email or password',
         });
@@ -53,7 +53,7 @@ exports.postLogin = (req, res, next) => {
               });
             });
           }
-          return res.status(422).json({
+          return res.json({
             success: false,
             errorMessage: 'Invalid email or password',
           });
@@ -78,7 +78,7 @@ exports.postSignup = (req, res, next) => {
   const admin = typeof req.body.admin !== 'undefined' && req.body.admin == true;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({
+    return res.json({
       success: false,
       errorMessage: errors.array()[0].msg,
     });
