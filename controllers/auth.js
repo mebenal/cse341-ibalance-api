@@ -208,6 +208,6 @@ exports.postNewPassword = (req, res, next) => {
     });
 
   exports.getLoggedIn = (req, res, next) => {
-    res.json({loggedIn:req.session.isLoggedIn});
+    return res.json({loggedIn:req.session.isLoggedIn});
   }
 };
