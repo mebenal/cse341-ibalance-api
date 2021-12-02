@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport(
 );
 
 exports.getIndex = (req, res, next) => {
-  res.json({_csrf:req.csrfToken()})
-}
+  res.json({ _csrf: req.csrfToken() });
+};
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
@@ -26,12 +26,8 @@ exports.postLogin = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
+      success: false,
       errorMessage: errors.array()[0].msg,
-      oldInput: {
-        email: email,
-        password: password,
-      },
-      validationErrors: errors.array(),
     });
   }
 
@@ -39,12 +35,8 @@ exports.postLogin = (req, res, next) => {
     .then(user => {
       if (!user) {
         return res.status(422).json({
+          success: false,
           errorMessage: 'Invalid email or password',
-          oldInput: {
-            email: email,
-            password: password,
-          },
-          validationErrors: [],
         });
       }
       bcrypt
@@ -56,22 +48,19 @@ exports.postLogin = (req, res, next) => {
             req.session.isAdmin = user.admin;
             return req.session.save(err => {
               console.log(err);
-              return res.json({loggedIn:true});
+              return res.json({
+                success: true,
+              });
             });
           }
           return res.status(422).json({
+            success: false,
             errorMessage: 'Invalid email or password',
-            oldInput: {
-              email: email,
-              password: password,
-            },
-            validationErrors: [],
-            _csrf: req.csrfToken(),
           });
         })
         .catch(err => {
           console.log(err);
-          res.json({loggedIn:false});
+          res.json({ success: false, errorMessage: 'general error' });
         });
     })
     .catch(err => {
@@ -86,19 +75,12 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const admin = typeof req.body.admin !== 'undefined';
+  const admin = typeof req.body.admin !== 'undefined' && req.body.admin == true;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
+      success: false,
       errorMessage: errors.array()[0].msg,
-      oldInput: {
-        name: name,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        admin: admin,
-      },
-      validationErrors: errors.array(),
     });
   }
   bcrypt
@@ -108,13 +90,12 @@ exports.postSignup = (req, res, next) => {
         name: name,
         email: email,
         password: hashedPassword,
-        cart: { items: [] },
         admin: admin,
       });
       return user.save();
     })
     .then(result => {
-      return res.json("");
+      return res.json({ success: true });
       return transporter.jsonMail({
         to: email,
         from: 'ebe17003@byui.edu',
@@ -132,7 +113,7 @@ exports.postSignup = (req, res, next) => {
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
     console.log(err);
-    res.json({success:true});
+    res.json({ success: true });
   });
 };
 
@@ -140,21 +121,23 @@ exports.postReset = (req, res, next) => {
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(err);
-      return res.redirect('/reset');
+      return res.json({ success: false, errorMessage: err });
     }
     const token = buffer.toString('hex');
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
-          req.flash('error', 'No account with that email found.');
-          return res.redirect('/reset');
+          return res.json({
+            success: false,
+            errorMessage: 'No account with that email found.',
+          });
         }
         user.resetToken = token;
         user.resetTokenExpiration = Date.now() + 3600000;
         return user.save();
       })
       .then(result => {
-        res.redirect('/');
+        return res.json({ success: true });
         transporter.jsonMail({
           to: req.body.email,
           from: 'ebe17003@byui.edu',
@@ -216,7 +199,7 @@ exports.postNewPassword = (req, res, next) => {
       return resetUser.save();
     })
     .then(result => {
-      res.json({success:true});
+      res.json({ success: true });
     })
     .catch(err => {
       const error = new Error(err);

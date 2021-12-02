@@ -32,6 +32,7 @@ const sess = {
     secure: true,
     maxAge: null,
     sameSite: 'none',
+    maxAge: (Date.now() + 1000 * 60 * 60).getMilliseconds(),
   },
 };
 const csrfProtection = csrf({ cookie: { sameSite: 'none', secure: true } });
@@ -63,7 +64,7 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 const adminRoutes = require('./routes/admin');
 
-app.set('trust proxy', 1)
+app.set('trust proxy', 1);
 app.use(
   cors({
     credentials: true,

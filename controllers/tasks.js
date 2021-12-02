@@ -1,9 +1,3 @@
-// Task format
-//task[0]
-//  "taskTitle" = ""
-//  "taskCategory" = ""
-//  "taskCompletionStatus" = False
-//  "" time (possibly)
 const Task = require('../middleware/task');
 
 exports.getDailyTasks = (req, res, next) => {
@@ -18,11 +12,7 @@ exports.getDailyTasks = (req, res, next) => {
 
   Task.getTasks(today, tomorrow, req.user).then(tasks => {
     return res.json({
-      path: '/daily-tasks',
-      pageTitle: 'Daily Tasks',
-      date: new Date(),
       task: tasks, // has name and category color - Sam
-      _csrf: req.csrfToken(),
     });
   });
 };
@@ -44,7 +34,7 @@ exports.postAddNewTask = (req, res, next) => {
     req.user,
     taskRepeats
   ).then(saved => {
-    res.json({saved:saved})
+    res.json({success:saved})
   });
 };
 
@@ -52,7 +42,7 @@ exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
   Task.deleteTask(taskId)
   .then(deleted =>{
-    res.json({deleted:deleted})
+    res.json({success:deleted})
   })
 };
 
@@ -60,11 +50,11 @@ exports.postEditTask = (req, res, next) => {
   const taskId = req.body.taskId;
   const taskTitle = req.body.taskTitle;
   const taskCategory = req.body.taskCategory;
-  const taskCompletionStatus = false;
+  const taskCompletionStatus = req.body.taskCompletionStatus;
   const taskDueDate = req.body.taskDate;
   const taskNotes = req.body.taskNotes;
   Task.editTask(taskId, taskCategory, taskTitle, taskDueDate, taskCompletionStatus, taskNotes)
   .then(edited => {
-    res.json({edited:edited});
+    res.json({success:edited});
   })
 };
