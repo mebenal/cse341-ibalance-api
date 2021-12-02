@@ -206,4 +206,8 @@ exports.postNewPassword = (req, res, next) => {
       error.httpStatusCode = 500;
       return next(error);
     });
+
+  exports.getLoggedIn = (req, res, next) => {
+    res.json({loggedIn:req.session.isLoggedIn});
+  }
 };
