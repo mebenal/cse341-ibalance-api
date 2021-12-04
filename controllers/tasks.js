@@ -42,7 +42,7 @@ exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
   Task.deleteTask(taskId)
   .then(deleted =>{
-    res.json({success:deleted})
+    res.json({success:Boolean(deleted.deletedCount)})
   })
 };
 

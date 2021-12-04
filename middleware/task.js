@@ -50,7 +50,7 @@ module.exports.editTask = function (
   completed,
   notes
 ) {
-  Task.findById(taskId).then(task => {
+  return Task.findById(taskId).then(task => {
     task.category = category;
     task.title = title;
     task.date = date;
