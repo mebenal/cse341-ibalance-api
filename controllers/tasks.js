@@ -50,8 +50,8 @@ exports.postEditTask = (req, res, next) => {
   const taskId = req.body.taskId;
   const taskTitle = req.body.taskTitle;
   const taskCategory = req.body.taskCategory;
-  const taskCompletionStatus = req.body.taskCompletionStatus;
-  const taskDueDate = req.body.taskDate;
+  const taskCompletionStatus = req.body.taskCompletionStatus == 'true';
+  const taskDueDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
   Task.editTask(taskId, taskCategory, taskTitle, taskDueDate, taskCompletionStatus, taskNotes)
   .then(edited => {
