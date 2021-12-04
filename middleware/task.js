@@ -38,13 +38,7 @@ module.exports.addTask = function (
 
 module.exports.deleteTask = function (taskId, deleteRepeatElements = false) {
   if (!deleteRepeatElements) {
-    Task.deleteOne({ _id: taskId });
-  } else {
-    Task.findById(taskId).then(task => {
-      if (task.repeatId) {
-        Task.deleteMany({ repeatId: task.repeatId });
-      }
-    });
+    return Task.deleteOne({ _id: taskId });
   }
 };
 
