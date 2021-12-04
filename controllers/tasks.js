@@ -22,13 +22,13 @@ exports.postAddNewTask = (req, res, next) => {
   const taskTitle = req.body.taskTitle;
   const taskCategory = req.body.taskCategory;
   const taskCompletionStatus = false;
-  const taskDueDate = new Date(req.body.taskDueDate);
+  const taskDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
   const taskRepeats = req.body.taskRepeats;
   Task.addTask(
     taskCategory,
     taskTitle,
-    taskDueDate,
+    taskDate,
     taskCompletionStatus,
     taskNotes,
     req.user,
@@ -51,9 +51,10 @@ exports.postEditTask = (req, res, next) => {
   const taskTitle = req.body.taskTitle;
   const taskCategory = req.body.taskCategory;
   const taskCompletionStatus = req.body.taskCompletionStatus == 'true';
-  const taskDueDate = new Date(req.body.taskDate);
+  const taskDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
-  Task.editTask(taskId, taskCategory, taskTitle, taskDueDate, taskCompletionStatus, taskNotes)
+  console.log(taskDueDate)
+  Task.editTask(taskId, taskCategory, taskTitle, taskDate, taskCompletionStatus, taskNotes)
   .then(edited => {
     res.json({success:edited});
   })
