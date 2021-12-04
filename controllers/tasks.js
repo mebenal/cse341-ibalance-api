@@ -34,16 +34,15 @@ exports.postAddNewTask = (req, res, next) => {
     req.user,
     taskRepeats
   ).then(saved => {
-    res.json({success:saved})
+    res.json({ success: saved });
   });
 };
 
 exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
-  Task.deleteTask(taskId)
-  .then(deleted =>{
-    res.json({success:Boolean(deleted.deletedCount)})
-  })
+  Task.deleteTask(taskId).then(deleted => {
+    res.json({ success: Boolean(deleted.deletedCount) });
+  });
 };
 
 exports.postEditTask = (req, res, next) => {
@@ -53,8 +52,15 @@ exports.postEditTask = (req, res, next) => {
   const taskCompletionStatus = req.body.taskCompletionStatus;
   const taskDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
-  Task.editTask(taskId, taskCategory, taskTitle, taskDate, taskCompletionStatus, taskNotes)
-  .then(edited => {
-    res.json({success:edited});
-  })
+  console.log(typeof taskCompletionStatus);
+  Task.editTask(
+    taskId,
+    taskCategory,
+    taskTitle,
+    taskDate,
+    taskCompletionStatus,
+    taskNotes
+  ).then(edited => {
+    res.json({ success: edited });
+  });
 };
