@@ -53,7 +53,6 @@ exports.postEditTask = (req, res, next) => {
   const taskCompletionStatus = req.body.taskCompletionStatus == 'true';
   const taskDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
-  console.log(taskDueDate)
   Task.editTask(taskId, taskCategory, taskTitle, taskDate, taskCompletionStatus, taskNotes)
   .then(edited => {
     res.json({success:edited});
