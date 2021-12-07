@@ -17,6 +17,12 @@ exports.getDailyTasks = (req, res, next) => {
   });
 };
 
+exports.getWeeklyTasks = (req, res, next) => {
+  const now = new Date();
+  const startOfWeek = (new Date()).setHours(now.getDate() * 24 * -1)
+  console.log(startOfWeek)
+}
+
 exports.postAddNewTask = (req, res, next) => {
   // Creates a new task
   const taskTitle = req.body.taskTitle;
