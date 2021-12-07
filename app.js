@@ -132,7 +132,9 @@ mongoose
   .then(result => {
     let server = app.listen(PORT);
     const io = require('socket.io')(server);
+    app.set('io', io)
     app.use((req, res, next) => {
+      const io = app.get('io')
       io.on('connection', socket => {
         console.log('A user connected');
         socket.nickname = req.user.email;
