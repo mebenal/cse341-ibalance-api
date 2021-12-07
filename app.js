@@ -132,19 +132,22 @@ mongoose
   .then(result => {
     let server = app.listen(PORT);
     const io = require('socket.io')(server);
-    io.on('connection', socket => {
-      console.log('A user connected');
-      socket.nickname = req.user.email;
-      //Whenever someone disconnects this piece of code executed
-      socket.on('disconnect', () => {
-        console.log(`${socket.nickname} user disconnected`);
-      });
+    app.use((req, res, next) => {
+      io.on('connection', socket => {
+        console.log('A user connected');
+        socket.nickname = req.user.email;
+        //Whenever someone disconnects this piece of code executed
+        socket.on('disconnect', () => {
+          console.log(`${socket.nickname} user disconnected`);
+        });
 
-      socket.on('news', data => {
-        var msg = data + 'world';
-        console.log(msg);
-        socket.emit('news-response', msg);
+        socket.on('news', data => {
+          var msg = data + 'world';
+          console.log(msg);
+          socket.emit('news-response', msg);
+        });
       });
+      next()
     });
   })
   .catch(err => {
