@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const User = require('./user');
 
-const messasgeSchema = new Schema({
+const messageSchema = new Schema({
   toUserId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
