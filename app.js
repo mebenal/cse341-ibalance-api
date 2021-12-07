@@ -133,10 +133,18 @@ mongoose
     let server = app.listen(PORT);
     const io = require('socket.io')(server);
     io.on('connection', socket => {
+  const User = require('../models/user');
+
       console.log('A user connected');
       
       socket.on('name', email => {
         socket.nickname = email
+        socket.emit('ack', {connected: true})
+      })
+
+      socket.on('messageTo', data => {
+        const users = User.find({email: data})
+        console.log(users)
       })
 
       //Whenever someone disconnects this piece of code executed
