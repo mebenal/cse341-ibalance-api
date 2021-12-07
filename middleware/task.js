@@ -1,5 +1,5 @@
 const Task = require('../models/task');
-const Repeat = require('../models/repeat');
+const Repeat = require('../models/message');
 
 module.exports.addTask = function (
   category,

@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const PORT = process.env.PORT || 3000;
+
 const path = require('path');
 
 const express = require('express');
@@ -12,6 +14,7 @@ const csrf = require('csurf');
 const cors = require('cors');
 const flash = require('connect-flash');
 const multer = require('multer');
+const io = require("socket.io")(PORT)
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -58,11 +61,19 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const PORT = process.env.PORT || 3000;
 
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 const adminRoutes = require('./routes/admin');
+
+io.on('connection', function(socket){
+  console.log('A user connected');
+  
+  //Whenever someone disconnects this piece of code executed
+  socket.on('disconnect', function () {
+     console.log('A user disconnected');
+  });
+})
 
 app.set('trust proxy', 1);
 app.use(
