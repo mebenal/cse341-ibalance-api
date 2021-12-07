@@ -4,18 +4,22 @@ const Schema = mongoose.Schema;
 const User = require('./user');
 
 const messageSchema = new Schema({
-  toUserId: {
-    type: Schema.Types.ObjectId,
+  toUserEmail: {
+    type: String,
     ref: 'User',
     required: true,
   },
-  fromUserId: {
-    type: Schema.Types.ObjectId,
+  fromUserEmail: {
+    type: String,
     ref: 'User',
     required: true,
   },
   message: {
     type: String,
+    required: true,
+  },
+  timeSent: {
+    type: Date,
     required: true,
   },
 });

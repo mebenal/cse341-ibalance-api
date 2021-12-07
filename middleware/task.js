@@ -1,5 +1,4 @@
 const Task = require('../models/task');
-const Repeat = require('../models/message');
 
 module.exports.addTask = function (
   category,
@@ -7,31 +6,16 @@ module.exports.addTask = function (
   date,
   completed,
   notes,
-  user,
-  repeat
+  user
 ) {
-  console.log(date);
-  let newTask;
-  if (repeat) {
-    newTask = new Task({
-      category: category,
-      title: title,
-      date: date,
-      completed: completed,
-      notes: notes,
-      userId: user._id,
-      repeat: new Repeat({ user: user._id })._id,
-    });
-  } else {
-    newTask = new Task({
-      category: category,
-      title: title,
-      date: date,
-      completed: completed,
-      notes: notes,
-      userId: user._id,
-    });
-  }
+  const newTask = new Task({
+    category: category,
+    title: title,
+    date: date,
+    completed: completed,
+    notes: notes,
+    userId: user._id,
+  });
 
   return newTask.save();
 };

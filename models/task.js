@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const User = require('./user')
-const Repeat = require('./message')
+const User = require('./user');
+const Repeat = require('./message');
 
 const taskSchema = new Schema({
   category: {
     type: String,
     required: true,
-    enum: ['physical', 'spiritual', 'intellectual', 'social']
+    enum: ['physical', 'spiritual', 'intellectual', 'social'],
   },
   title: {
     type: String,
@@ -20,18 +20,14 @@ const taskSchema = new Schema({
   },
   completed: {
     type: Boolean,
-    required: true
+    required: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
-  },
-  repeatId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Repeat',
+    required: true,
   },
   notes: String,
 });
 
-module.exports = mongoose.model('Task', taskSchema)
+module.exports = mongoose.model('Task', taskSchema);

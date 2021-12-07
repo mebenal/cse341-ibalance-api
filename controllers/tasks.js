@@ -24,15 +24,13 @@ exports.postAddNewTask = (req, res, next) => {
   const taskCompletionStatus = false;
   const taskDate = new Date(req.body.taskDate);
   const taskNotes = req.body.taskNotes;
-  const taskRepeats = req.body.taskRepeats;
   Task.addTask(
     taskCategory,
     taskTitle,
     taskDate,
     taskCompletionStatus,
     taskNotes,
-    req.user,
-    taskRepeats
+    req.user
   ).then(saved => {
     res.json({ success: saved });
   });
