@@ -146,6 +146,7 @@ mongoose
         console.log(data)
         const users = User.find({email: data})
         console.log(users)
+        
       })
 
       //Whenever someone disconnects this piece of code executed
