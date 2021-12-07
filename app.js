@@ -139,6 +139,12 @@ mongoose
       socket.on('disconnect', function () {
         console.log('A user disconnected');
       });
+
+      socket.on('news', function (data) {
+        var msg = data + 'world';
+        console.log(msg);
+        socket.emit('news-response', msg);
+      });
     });
   })
   .catch(err => {
