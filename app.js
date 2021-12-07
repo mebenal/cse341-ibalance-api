@@ -145,6 +145,7 @@ mongoose
       socket.on('messageTo', data => {
         const users = User.find({email: data})
         console.log(users)
+        console.log('helpme')
       })
 
       //Whenever someone disconnects this piece of code executed
