@@ -209,5 +209,5 @@ exports.postNewPassword = (req, res, next) => {
 };
 
 exports.getLoggedIn = (req, res, next) => {
-  return res.json({loggedIn:req.session.isLoggedIn ? true : false, email:req.user.email});
+  return res.json({loggedIn:req.session.isLoggedIn ? true : false, email:req.user ? req.user.email : ''});
 }
