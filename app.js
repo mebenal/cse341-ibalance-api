@@ -133,7 +133,7 @@ mongoose
     let server = app.listen(PORT);
     const io = require('socket.io')(server);
     io.on('connection', socket => {
-  const User = require('../models/user');
+    const User = require('./models/user');
 
       console.log('A user connected');
       
