@@ -145,6 +145,7 @@ mongoose
       socket.on('messageTo', data => {
         User.find({ email: data }).then(users => {
           if (users.length) {
+            console.log(Object.keys(io.sockets.sockets))
             Message.getMessages(socket.nickname, users[0].email).then(messages => {
               socket.emit('messageData', {success: true, data:messages})
             })
@@ -152,6 +153,11 @@ mongoose
             socket.emit('messageData', {success: false})
           }
         })
+      })
+
+      socket.on('sendMessage', data => {
+        Message.addMessage(data.toEmail, socket.nickname, data.message, data.time)
+        socket.emit('recieveMessage')
       })
 
       //Whenever someone disconnects this piece of code executed
