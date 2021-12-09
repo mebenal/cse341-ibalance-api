@@ -136,29 +136,38 @@ mongoose
       const User = require('./models/user');
       const Message = require('./middleware/message');
       console.log('A user connected');
-      
+
       socket.on('name', email => {
-        socket.nickname = email
-        socket.emit('ack', {success: true})
-      })
+        socket.nickname = email;
+        socket.emit('ack', { success: true });
+      });
 
       socket.on('messageTo', data => {
         User.find({ email: data }).then(users => {
           if (users.length) {
-            console.log(io.of('/').sockets)
-            Message.getMessages(socket.nickname, users[0].email).then(messages => {
-              socket.emit('messageData', {success: true, data:messages})
-            })
+            io.of('/').sockets.foreach(data => {
+              console.log(data.nickname);
+            });
+            Message.getMessages(socket.nickname, users[0].email).then(
+              messages => {
+                socket.emit('messageData', { success: true, data: messages });
+              }
+            );
           } else {
-            socket.emit('messageData', {success: false})
+            socket.emit('messageData', { success: false });
           }
-        })
-      })
+        });
+      });
 
       socket.on('sendMessage', data => {
-        Message.addMessage(data.toEmail, socket.nickname, data.message, data.time)
-        socket.emit('recieveMessage')
-      })
+        Message.addMessage(
+          data.toEmail,
+          socket.nickname,
+          data.message,
+          data.time
+        );
+        socket.emit('recieveMessage');
+      });
 
       //Whenever someone disconnects this piece of code executed
       socket.on('disconnect', () => {
