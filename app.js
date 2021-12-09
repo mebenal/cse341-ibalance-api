@@ -145,10 +145,6 @@ mongoose
       socket.on('messageTo', data => {
         User.find({ email: data }).then(users => {
           if (users.length) {
-            for (const [_, socketLoop] of io.of("/").sockets) {
-              console.log(socketLoop)
-              console.log(socketLoop.nickname)
-            }
             Message.getMessages(socket.nickname, users[0].email).then(
               messages => {
                 socket.emit('messageData', { success: true, data: messages });
@@ -161,13 +157,24 @@ mongoose
       });
 
       socket.on('sendMessage', data => {
-        Message.addMessage(
+        let test = Message.addMessage(
           data.toEmail,
           socket.nickname,
           data.message,
           data.time
         );
-        socket.emit('recieveMessage');
+        console.log(test);
+        socketList = [];
+        for (const [_, socketLoop] of io.of('/').sockets) {
+          socketList.append(socketLoop);
+        }
+        socketList = socketList.filter(socket => {
+          return socket.nickname == data.toEmail;
+        });
+        socketList.forEach(socketItem => {
+          socketItem.emit('recieveMessage', data)
+        })
+        socket.emit('recieveMessage', data);
       });
 
       //Whenever someone disconnects this piece of code executed
