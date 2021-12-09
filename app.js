@@ -166,7 +166,7 @@ mongoose
         console.log(test);
         socketList = [];
         for (const [_, socketLoop] of io.of('/').sockets) {
-          socketList.append(socketLoop);
+          socketList.push(socketLoop);
         }
         socketList = socketList.filter(socket => {
           return socket.nickname == data.toEmail;
