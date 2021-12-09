@@ -6,13 +6,15 @@ module.exports.addMessage = function (toEmail, fromEmail, message, sentTime) {
 };
 
 module.exports.getMessages = function (email1, email2) {
-  console.log(`${email1}, ${email2}`)
-  let messages = Message.find({
+
+  return Message.find({
     $or: [
       { $and: [{ toUserEmail: email1 }, { fromUserEmail: email2 }] },
       { $and: [{ toUserEmail: email2 }, { fromUserEmail: email1 }] },
     ],
+  }).then(messages => {
+    console.log(messages)
+    return messages
   });
-  console.log(messages)
-  return messages
+  
 };
