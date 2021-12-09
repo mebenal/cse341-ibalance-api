@@ -161,7 +161,7 @@ mongoose
           data.toEmail,
           socket.nickname,
           data.message,
-          data.time
+          data.date
         ).then(success => {
           socketList = [];
           for (const [_, socketLoop] of io.of('/').sockets) {
