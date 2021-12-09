@@ -147,6 +147,7 @@ mongoose
           if (users.length) {
             for (const [_, socketLoop] of io.of("/").sockets) {
               console.log(socketLoop)
+              console.log(socketLoop.nickname)
             }
             Message.getMessages(socket.nickname, users[0].email).then(
               messages => {
