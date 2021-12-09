@@ -145,7 +145,7 @@ mongoose
       socket.on('messageTo', data => {
         User.find({ email: data }).then(users => {
           if (users.length) {
-            console.log(Object.keys(io.sockets.sockets))
+            console.log(io.of('/').sockets)
             Message.getMessages(socket.nickname, users[0].email).then(messages => {
               socket.emit('messageData', {success: true, data:messages})
             })
