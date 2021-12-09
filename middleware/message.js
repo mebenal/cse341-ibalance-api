@@ -1,6 +1,7 @@
 const Message = require('../models/message');
 
 module.exports.addMessage = function (toEmail, fromEmail, message, sentTime) {
+  console.log(`toEmail: ${toEmail}, fromEmail: ${fromEmail}, message: ${message}, sentTime:${sentTime}`)
   const newMessage = new Message({ toUserEmail:toEmail, fromUserEmail:fromEmail, message:message, timeSent: sentTime });
   return newMessage.save();
 };

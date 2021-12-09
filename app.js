@@ -157,24 +157,24 @@ mongoose
       });
 
       socket.on('sendMessage', data => {
-        let test = Message.addMessage(
+        Message.addMessage(
           data.toEmail,
           socket.nickname,
           data.message,
           data.time
-        );
-        console.log(test);
-        socketList = [];
-        for (const [_, socketLoop] of io.of('/').sockets) {
-          socketList.push(socketLoop);
-        }
-        socketList = socketList.filter(socket => {
-          return socket.nickname == data.toEmail;
+        ).then(success => {
+          socketList = [];
+          for (const [_, socketLoop] of io.of('/').sockets) {
+            socketList.push(socketLoop);
+          }
+          socketList = socketList.filter(socket => {
+            return socket.nickname == data.toEmail;
+          });
+          socketList.forEach(socketItem => {
+            socketItem.emit('recieveMessage', data)
+          })
+          socket.emit('recieveMessage', data);
         });
-        socketList.forEach(socketItem => {
-          socketItem.emit('recieveMessage', data)
-        })
-        socket.emit('recieveMessage', data);
       });
 
       //Whenever someone disconnects this piece of code executed

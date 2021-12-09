@@ -5,12 +5,10 @@ const Schema = mongoose.Schema;
 const messageSchema = new Schema({
   toUserEmail: {
     type: String,
-    ref: 'User',
     required: true,
   },
   fromUserEmail: {
     type: String,
-    ref: 'User',
     required: true,
   },
   message: {
