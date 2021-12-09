@@ -133,18 +133,22 @@ mongoose
     let server = app.listen(PORT);
     const io = require('socket.io')(server);
     io.on('connection', socket => {
-    const User = require('./models/user');
-
+      const User = require('./models/user');
+      const Message = require('./middleware/message');
       console.log('A user connected');
       
       socket.on('name', email => {
         socket.nickname = email
-        socket.emit('ack', {connected: true})
+        socket.emit('ack', {success: true})
       })
 
       socket.on('messageTo', data => {
         User.find({ email: data }).then(users => {
-          console.log(users)
+          if (!users.length) {
+            socket.emit('messageData', {success: true, data:Message.getMessages(socket.nickname, users[0].email)})
+          } else {
+            socket.emit('messageData', {success: false})
+          }
         })
       })
 

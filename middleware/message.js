@@ -1,4 +1,3 @@
-const User = require('../models/user');
 const Message = require('../models/message');
 
 module.exports.addMessage = function (toEmail, fromEmail, message, sentTime) {
