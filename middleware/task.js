@@ -44,10 +44,19 @@ module.exports.editTask = function (
   });
 };
 
-module.exports.getTasks = function (startDate, endDate, user) {
+module.exports.getDailyTasks = function (
+  startDate,
+  endDate,
+  timeZoneOffset,
+  user
+) {
   return Task.find({
-    date: { $gte: startDate, $lte: endDate },
     userId: user._id,
+  }).then(tasks => {
+    return tasks.filter(task => {
+      const offsetDate = task.date - timeZoneOffset;
+      return offsetDate > startDate && offsetDate < endDate;
+    });
   });
 };
 

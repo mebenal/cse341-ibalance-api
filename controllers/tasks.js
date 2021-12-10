@@ -5,15 +5,12 @@ exports.getDailyTasks = (req, res, next) => {
   const now = new Date();
   const today = new Date(
     now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
-  );
+  ) - req.session.timeZoneOffset;
   const tomorrow = new Date(
     now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate() + 1)
   );
 
-  Task.getTasks(today, tomorrow, req.user).then(tasks => {
-    tasks.forEach(task => {
-      task.date=task.date.getTime()
-    })
+  Task.getDailyTasks(today, tomorrow, req.session.timeZoneOffset, req.user).then(tasks => {
     return res.json({
       task: tasks, // has name and category color - Sam
     });

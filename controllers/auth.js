@@ -22,6 +22,7 @@ exports.getIndex = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+  const timeZoneOffset = req.body.timeZoneOffset
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -46,6 +47,7 @@ exports.postLogin = (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
             req.session.isAdmin = user.admin;
+            req.session.timeZoneOffset = timeZoneOffset
             return req.session.save(err => {
               console.log(err);
               return res.json({
