@@ -2,15 +2,21 @@ const Task = require('../middleware/task');
 
 exports.getDailyTasks = (req, res, next) => {
   // gets all page data and users tasks
-  const now = new Date()- req.session.timeZoneOffset;
+  const now = new Date(new Date() - req.session.timeZoneOffset);
+  console.log(now.toString())
   const today = new Date(
     now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
-  ) ;
+  );
   const tomorrow = new Date(
     now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate() + 1)
   );
 
-  Task.getDailyTasks(today, tomorrow, req.session.timeZoneOffset, req.user).then(tasks => {
+  Task.getDailyTasks(
+    today,
+    tomorrow,
+    req.session.timeZoneOffset,
+    req.user
+  ).then(tasks => {
     return res.json({
       task: tasks, // has name and category color - Sam
     });
