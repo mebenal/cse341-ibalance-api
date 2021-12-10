@@ -34,7 +34,6 @@ const sess = {
     secure: true,
     maxAge: null,
     sameSite: 'none',
-    maxAge: 1000 * 60 * 60,
   },
 };
 const csrfProtection = csrf({ cookie: { sameSite: 'none', secure: true } });
