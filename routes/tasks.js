@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/daily-tasks', isAuth, tasksController.getDailyTasks);
 
-router.get('/categoty-tasks/:category', tasksController.getCategoryTasks);
+router.get('/category-tasks/:category', tasksController.getCategoryTasks);
 
 router.post('/add-task', isAuth, tasksController.postAddNewTask);
 
