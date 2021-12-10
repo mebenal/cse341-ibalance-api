@@ -10,7 +10,7 @@ const User = require('../models/user');
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key: null,
+      api_key: process.env.SENDGRID_API,
     },
   })
 );
@@ -22,8 +22,8 @@ exports.getIndex = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const timeZoneOffset = req.body.timeZoneOffset
-  console.log(timeZoneOffset)
+  const timeZoneOffset = req.body.timeZoneOffset;
+  console.log(timeZoneOffset);
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -48,7 +48,7 @@ exports.postLogin = (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
             req.session.isAdmin = user.admin;
-            req.session.timeZoneOffset = timeZoneOffset
+            req.session.timeZoneOffset = timeZoneOffset;
             return req.session.save(err => {
               console.log(err);
               return res.json({
@@ -119,7 +119,7 @@ exports.postLogout = (req, res, next) => {
   });
 };
 
-exports.postReset = (req, res, next) => {
+exports.postEmailReset = (req, res, next) => {
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(err);
@@ -139,14 +139,14 @@ exports.postReset = (req, res, next) => {
         return user.save();
       })
       .then(result => {
-        return res.json({ success: true });
         transporter.jsonMail({
           to: req.body.email,
-          from: 'ebe17003@byui.edu',
+          from: 'seb14001@byui.com',
           subject: 'Password Reset',
           html: `
           <p>You requested a password reset</p>
-          <p>Click this <a href="http:localhost:3000/reset/${token}">link</a> to set a new password</a>
+          <p>Take this token and use it to reset your password on the login page.</a>
+          <p>${token}</p>
         `,
         });
       })
@@ -158,33 +158,9 @@ exports.postReset = (req, res, next) => {
   });
 };
 
-exports.getNewPassword = (req, res, next) => {
-  const token = req.params.token;
-  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
-    .then(user => {
-      let message = req.flash('error');
-      if (message.length > 0) {
-        message = message[0];
-      } else {
-        message = null;
-      }
-      res.json({
-        errorMessage: message,
-        userId: user._id.toString(),
-        passwordToken: token,
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
-};
-
 exports.postNewPassword = (req, res, next) => {
   const newPassword = req.body.password;
-  const userId = req.body.userId;
-  const passwordToken = req.body.passwordToken;
+  const passwordToken = req.body.token;
   let resetUser;
   User.findOne({
     resetToken: passwordToken,
@@ -211,5 +187,8 @@ exports.postNewPassword = (req, res, next) => {
 };
 
 exports.getLoggedIn = (req, res, next) => {
-  return res.json({loggedIn:req.session.isLoggedIn ? true : false, email:req.user ? req.user.email : ''});
-}
+  return res.json({
+    loggedIn: req.session.isLoggedIn ? true : false,
+    email: req.user ? req.user.email : '',
+  });
+};

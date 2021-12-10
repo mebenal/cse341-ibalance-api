@@ -134,7 +134,6 @@ mongoose
     io.on('connection', socket => {
       const User = require('./models/user');
       const Message = require('./middleware/message');
-      console.log('A user connected');
 
       socket.on('name', email => {
         socket.nickname = email;
@@ -178,13 +177,6 @@ mongoose
 
       //Whenever someone disconnects this piece of code executed
       socket.on('disconnect', () => {
-        console.log(`${socket.nickname} user disconnected`);
-      });
-
-      socket.on('news', data => {
-        var msg = data + 'world';
-        console.log(msg);
-        socket.emit('news-response', msg);
       });
     });
   })
