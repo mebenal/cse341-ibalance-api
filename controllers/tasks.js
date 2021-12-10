@@ -11,17 +11,14 @@ exports.getDailyTasks = (req, res, next) => {
   );
 
   Task.getTasks(today, tomorrow, req.user).then(tasks => {
+    tasks.forEach(task => {
+      task.date=task.date.getTime()
+    })
     return res.json({
       task: tasks, // has name and category color - Sam
     });
   });
 };
-
-exports.getWeeklyTasks = (req, res, next) => {
-  const now = new Date();
-  const startOfWeek = (new Date()).setHours(now.getDate() * 24 * -1)
-  console.log(startOfWeek)
-}
 
 exports.postAddNewTask = (req, res, next) => {
   // Creates a new task

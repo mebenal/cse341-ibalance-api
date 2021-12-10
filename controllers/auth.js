@@ -112,10 +112,6 @@ exports.postSignup = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
-    console.log(req.cookies)
-    res.clearCookie('connect.sid')
-    console.log(req.cookies)
-    console.log(err);
     res.json({ success: true });
   });
 };
