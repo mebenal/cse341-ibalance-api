@@ -99,7 +99,7 @@ exports.postSignup = (req, res, next) => {
     })
     .then(result => {
       return res.json({ success: true });
-      return transporter.jsonMail({
+      return transporter.sendMail({
         to: email,
         from: 'ebe17003@byui.edu',
         subject: 'Signup Completed!',
@@ -139,7 +139,7 @@ exports.postEmailReset = (req, res, next) => {
         return user.save();
       })
       .then(result => {
-        transporter.jsonMail({
+        transporter.sendMail({
           to: req.body.email,
           from: 'seb14001@byui.com',
           subject: 'Password Reset',
