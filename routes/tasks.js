@@ -9,8 +9,6 @@ const router = express.Router();
 
 router.get('/daily-tasks', isAuth, tasksController.getDailyTasks);
 
-router.get('/weekly-tasks', isAuth, tasksController.getWeeklyTasks);
-
 router.post('/add-task', isAuth, tasksController.postAddNewTask);
 
 router.post('/edit-task', isAuth, tasksController.postEditTask);
