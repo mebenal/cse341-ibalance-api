@@ -1,13 +1,6 @@
 const Task = require('../models/task');
 
-module.exports.addTask = function (
-  category,
-  title,
-  date,
-  completed,
-  notes,
-  user
-) {
+exports.addTask = function (category, title, date, completed, notes, user) {
   const newTask = new Task({
     category: category,
     title: title,
@@ -20,20 +13,13 @@ module.exports.addTask = function (
   return newTask.save();
 };
 
-module.exports.deleteTask = function (taskId, deleteRepeatElements = false) {
+exports.deleteTask = function (taskId, deleteRepeatElements = false) {
   if (!deleteRepeatElements) {
     return Task.deleteOne({ _id: taskId });
   }
 };
 
-module.exports.editTask = function (
-  taskId,
-  category,
-  title,
-  date,
-  completed,
-  notes
-) {
+exports.editTask = function (taskId, category, title, date, completed, notes) {
   return Task.findById(taskId).then(task => {
     task.category = category;
     task.title = title;
@@ -44,15 +30,8 @@ module.exports.editTask = function (
   });
 };
 
-module.exports.getDailyTasks = function (
-  startDate,
-  endDate,
-  timeZoneOffset,
-  user
-) {
-  return Task.find({
-    userId: user._id,
-  }).then(tasks => {
+exports.getDailyTasks = function (startDate, endDate, timeZoneOffset, user) {
+  return Task.find({ userId: user._id }).then(tasks => {
     return tasks.filter(task => {
       const offsetDate = task.date - timeZoneOffset;
       return offsetDate > startDate && offsetDate < endDate;
@@ -60,7 +39,15 @@ module.exports.getDailyTasks = function (
   });
 };
 
-module.exports.getTask = function (taskId) {
+exports.getCategoryTasks = function (category, user) {
+  return Task.find({ userId: user._id }).then(tasks => {
+    return tasks.filter(task => {
+      return task.category == category;
+    });
+  });
+};
+
+exports.getTask = function (taskId) {
   task = Task.findById(str(taskId));
   console.log(task);
   return task;

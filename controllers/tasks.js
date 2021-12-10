@@ -23,6 +23,15 @@ exports.getDailyTasks = (req, res, next) => {
   });
 };
 
+exports.getCategoryTasks = (req, res, next => {
+  const category = req.params.category
+  Task.getCategoryTasks(category, req.user).then(tasks => {
+    return res.json({
+      task: tasks
+    })
+  })
+})
+
 exports.postAddNewTask = (req, res, next) => {
   // Creates a new task
   const taskTitle = req.body.taskTitle;
